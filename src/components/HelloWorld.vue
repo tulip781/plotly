@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>CIVE60009 (ISTEMM) - Interactive: Dimensional</h1>
-    <p class="label">frequency</p>
+    <p class="label">Frequency</p>
     <p>
       <vue-slider
         v-model="f"
@@ -12,7 +12,28 @@
         :width="200"
       />
     </p>
-
+    <p class="label">Phase</p>
+    <p>
+      <vue-slider
+        v-model="p"
+        :min="0"
+        :max="4"
+        class="slider"
+        :interval="0.1"
+        :width="200"
+      />
+    </p>
+    <p class="label">Amplitutde</p>
+    <p>
+      <vue-slider
+        v-model="a"
+        :min="1"
+        :max="4"
+        class="slider"
+        :interval="0.1"
+        :width="200"
+      />
+    </p>
     <div class="graph">
       <Plotly
         :data="dataForYLine"
@@ -37,6 +58,8 @@ export default {
   data() {
     return {
       f: 3,
+      p: 0,
+
       data: [
         {
           x: [1, 2, 3, 4],
@@ -144,8 +167,8 @@ export default {
     YgenerateX: function () {
       return 2;
     },
-    YgenerateZ: function (t) {
-      return t;
+    YgenerateZ: function (t, p = 0) {
+      return p + t;
     },
     XgenerateX: function (t, f = 1) {
       return Math.cos(2 * Math.PI * t * f);
@@ -153,8 +176,8 @@ export default {
     XgenerateY: function () {
       return -2;
     },
-    XgenerateZ: function (t) {
-      return t;
+    XgenerateZ: function (t, p = 0) {
+      return p + t;
     },
     signalGenerateX: function (t, f = 1) {
       return Math.cos(2 * Math.PI * t * f);
@@ -162,8 +185,8 @@ export default {
     signalGenerateY: function (t, f = 1) {
       return Math.sin(2 * Math.PI * t * f);
     },
-    signalGenerateZ: function (t) {
-      return t;
+    signalGenerateZ: function (t, p = 0) {
+      return p + t;
     },
     createYLine: function () {
       let points = {
@@ -174,7 +197,7 @@ export default {
       for (let t = 0; t < 2.5; t += 0.01) {
         points.x.push(this.YgenerateX());
         points.y.push(this.YgenerateY(t, this.f));
-        points.z.push(this.YgenerateZ(t, this.f));
+        points.z.push(this.YgenerateZ(t, this.p));
       }
       return points;
     },
@@ -187,7 +210,7 @@ export default {
       for (let t = 0; t < 2.5; t += 0.01) {
         points.x.push(this.XgenerateX(t, this.f));
         points.y.push(this.XgenerateY());
-        points.z.push(this.XgenerateZ(t, this.f));
+        points.z.push(this.XgenerateZ(t, this.p));
       }
       return points;
     },
@@ -200,7 +223,7 @@ export default {
       for (let t = 0; t < 2.5; t += 0.01) {
         points.x.push(this.signalGenerateX(t, this.f));
         points.y.push(this.signalGenerateY(t, this.f));
-        points.z.push(this.signalGenerateZ(t));
+        points.z.push(this.signalGenerateZ(t, this.p));
       }
       return points;
     },
