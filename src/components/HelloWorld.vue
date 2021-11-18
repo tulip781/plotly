@@ -1,24 +1,42 @@
 <template>
-  <div class="graph">
-    <Plotly
-      :data="dataForYLine"
-      :layout="layout"
-      :display-mode-bar="true"
-    ></Plotly>
+  <div>
+    <h1>CIVE60009 (ISTEMM) - Interactive: Dimensional</h1>
+    <p class="label">frequency</p>
+    <p>
+      <vue-slider
+        v-model="f"
+        :min="1"
+        :max="4"
+        class="slider"
+        :interval="0.1"
+        :width="200"
+      />
+    </p>
+
+    <div class="graph">
+      <Plotly
+        :data="dataForYLine"
+        :layout="layout"
+        :display-mode-bar="false"
+      ></Plotly>
+    </div>
   </div>
 </template>
 
 <script>
 import { Plotly } from "vue-plotly";
+import VueSlider from "vue-slider-component";
+import "vue-slider-component/theme/antd.css";
 
 export default {
   name: "HelloWorld",
   components: {
     Plotly,
+    VueSlider,
   },
   data() {
     return {
-      attr: { displayModeBar: false, staticPlot: true },
+      f: 3,
       data: [
         {
           x: [1, 2, 3, 4],
@@ -55,6 +73,7 @@ export default {
           z: [10, 15, 13, 17],
           type: "scatter3d",
           mode: "lines",
+          name: "e^j2πkf0t",
           opacity: 1,
           line: {
             width: 5,
@@ -64,29 +83,45 @@ export default {
         },
       ],
       layout: {
-        title: "CIVE60009 (ISTEMM) - Interactive: Dimensional ",
         scene: {
-          aspectmode: "cube",
-
-          xaxis: { title: "Real Axis", range: [-2, 2] },
-          yaxis: { title: "Imaginary Axis", range: [-2, 2] },
+          aspectmode: "manual",
+          aspectratio: { x: 1, y: 1, z: 2 },
+          xaxis: {
+            title: "Real Axis",
+            range: [-2, 2],
+            dtick: 1,
+            showspikes: true,
+            linecolor: "#000000",
+            linewidth: "5",
+          },
+          yaxis: {
+            title: "Imaginary Axis",
+            range: [-2, 2],
+            dtick: 1,
+            showspikes: true,
+            linecolor: "#000000",
+            linewidth: "5",
+          },
           zaxis: {
             title: "Time",
-            linecolor: "#FFFF00",
-            linewidth: "10",
+            linecolor: "#000000",
+            linewidth: "5",
             range: [-1, 3],
+            dtick: 1,
+            showspikes: true,
           },
 
           camera: {
+            projection: { type: "orthographic" },
             center: {
               x: 0,
               y: 0,
               z: 0,
             },
             eye: {
-              x: -1.5,
-              y: 1.5,
-              z: 1.5,
+              x: -1,
+              y: 0.8,
+              z: 1.8,
             },
             up: {
               x: 0,
@@ -95,16 +130,16 @@ export default {
             },
           },
         },
-        width: 1000,
-        height: 600,
+        width: 1200,
+        height: 800,
         showlegend: true,
         text: ["Olle", "is", "cool"],
       },
     };
   },
   methods: {
-    YgenerateY: function (t) {
-      return Math.sin(2 * Math.PI * t);
+    YgenerateY: function (t, f = 1) {
+      return Math.sin(2 * Math.PI * t * f);
     },
     YgenerateX: function () {
       return 2;
@@ -112,8 +147,8 @@ export default {
     YgenerateZ: function (t) {
       return t;
     },
-    XgenerateX: function (t) {
-      return Math.cos(2 * Math.PI * t);
+    XgenerateX: function (t, f = 1) {
+      return Math.cos(2 * Math.PI * t * f);
     },
     XgenerateY: function () {
       return -2;
@@ -121,11 +156,11 @@ export default {
     XgenerateZ: function (t) {
       return t;
     },
-    signalGenerateX: function (t) {
-      return Math.cos(2 * Math.PI * t);
+    signalGenerateX: function (t, f = 1) {
+      return Math.cos(2 * Math.PI * t * f);
     },
-    signalGenerateY: function (t) {
-      return Math.sin(2 * Math.PI * t);
+    signalGenerateY: function (t, f = 1) {
+      return Math.sin(2 * Math.PI * t * f);
     },
     signalGenerateZ: function (t) {
       return t;
@@ -136,10 +171,10 @@ export default {
         y: [],
         z: [],
       };
-      for (let t = -1; t < 3; t += 0.01) {
+      for (let t = 0; t < 2.5; t += 0.01) {
         points.x.push(this.YgenerateX());
-        points.y.push(this.YgenerateY(t));
-        points.z.push(this.YgenerateZ(t));
+        points.y.push(this.YgenerateY(t, this.f));
+        points.z.push(this.YgenerateZ(t, this.f));
       }
       return points;
     },
@@ -149,10 +184,10 @@ export default {
         y: [],
         z: [],
       };
-      for (let t = -1; t < 3; t += 0.01) {
-        points.x.push(this.XgenerateX(t));
+      for (let t = 0; t < 2.5; t += 0.01) {
+        points.x.push(this.XgenerateX(t, this.f));
         points.y.push(this.XgenerateY());
-        points.z.push(this.XgenerateZ(t));
+        points.z.push(this.XgenerateZ(t, this.f));
       }
       return points;
     },
@@ -162,9 +197,9 @@ export default {
         y: [],
         z: [],
       };
-      for (let t = -1; t < 3; t += 0.01) {
-        points.x.push(this.signalGenerateX(t));
-        points.y.push(this.signalGenerateY(t));
+      for (let t = 0; t < 2.5; t += 0.01) {
+        points.x.push(this.signalGenerateX(t, this.f));
+        points.y.push(this.signalGenerateY(t, this.f));
         points.z.push(this.signalGenerateZ(t));
       }
       return points;
@@ -213,5 +248,12 @@ a {
 
 .graph {
   width: 100%;
+}
+.slider {
+  width: 200px;
+  margin: 0 auto;
+}
+.label {
+  display: inline;
 }
 </style>
