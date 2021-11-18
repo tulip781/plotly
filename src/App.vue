@@ -9,6 +9,7 @@ import HelloWorld from "./components/HelloWorld.vue";
 
 export default {
   name: "App",
+  title: "Dimensional Graph",
   components: {
     HelloWorld,
   },

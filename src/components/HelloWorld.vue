@@ -1,46 +1,49 @@
 <template>
-  <div>
-    <h1>CIVE60009 (ISTEMM) - Interactive: Dimensional</h1>
-    <p class="label">Frequency</p>
-    <p>
-      <vue-slider
-        v-model="f"
-        :min="1"
-        :max="4"
-        class="slider"
-        :interval="0.1"
-        :width="200"
-      />
-    </p>
-    <p class="label">Phase</p>
-    <p>
-      <vue-slider
-        v-model="p"
-        :min="0"
-        :max="4"
-        class="slider"
-        :interval="0.1"
-        :width="200"
-      />
-    </p>
-    <p class="label">Amplitutde</p>
-    <p>
-      <vue-slider
-        v-model="a"
-        :min="1"
-        :max="4"
-        class="slider"
-        :interval="0.1"
-        :width="200"
-      />
-    </p>
-    <div class="graph">
-      <Plotly
-        :data="dataForYLine"
-        :layout="layout"
-        :display-mode-bar="false"
-      ></Plotly>
+  <div class="wrapper">
+    <h1>Dimensional (Frequency, Phase, Amplitude)</h1>
+    <div class="slider-group">
+      <p class="label">Frequency</p>
+      <p>
+        <vue-slider
+          v-model="f"
+          :min="1"
+          :max="4"
+          class="slider"
+          :interval="0.01"
+          :width="200"
+        />
+      </p>
+      <p class="label">Phase</p>
+      <p>
+        <vue-slider
+          v-model="p"
+          :min="0"
+          :max="4"
+          class="slider"
+          :interval="0.01"
+          :width="200"
+        />
+      </p>
+      <p class="label">Amplitutde</p>
+      <p>
+        <vue-slider
+          v-model="a"
+          :min="0.1"
+          :max="1.7"
+          class="slider"
+          :interval="0.01"
+          :width="200"
+        />
+      </p>
     </div>
+
+    <Plotly
+      class="graph"
+      :data="dataForYLine"
+      :layout="layout"
+      :display-mode-bar="false"
+      :drag-mode="false"
+    ></Plotly>
   </div>
 </template>
 
@@ -51,6 +54,7 @@ import "vue-slider-component/theme/antd.css";
 
 export default {
   name: "HelloWorld",
+  title: "Dimensional Graph",
   components: {
     Plotly,
     VueSlider,
@@ -59,7 +63,7 @@ export default {
     return {
       f: 3,
       p: 0,
-
+      a: 1,
       data: [
         {
           x: [1, 2, 3, 4],
@@ -68,7 +72,7 @@ export default {
           name: "𝑠𝑖𝑛(2𝜋𝑓₀𝑡)",
           type: "scatter3d",
           mode: "lines",
-          text: "OLLIE",
+
           opacity: 1,
           line: {
             width: 5,
@@ -82,7 +86,7 @@ export default {
           z: [10, 15, 13, 17],
           type: "scatter3d",
           mode: "lines",
-          name: "cos(2𝜋𝑓₀𝑡)",
+          name: "𝑐𝑜𝑠(2𝜋𝑓₀𝑡)",
           opacity: 1,
           line: {
             width: 5,
@@ -96,7 +100,7 @@ export default {
           z: [10, 15, 13, 17],
           type: "scatter3d",
           mode: "lines",
-          name: "e^j2πkf0t",
+          name: "e^(2𝜋𝑓₀𝑡)",
           opacity: 1,
           line: {
             width: 5,
@@ -106,7 +110,9 @@ export default {
         },
       ],
       layout: {
+        dragmode: false,
         scene: {
+          dragmode: false,
           aspectmode: "manual",
           aspectratio: { x: 1, y: 1, z: 2 },
           xaxis: {
@@ -156,37 +162,48 @@ export default {
         width: 1200,
         height: 800,
         showlegend: true,
-        text: ["Olle", "is", "cool"],
+        legend: {
+          y: 1,
+          traceorder: "normal",
+          font: {
+            family: "Avenir, Helvetica, Arial, sans-serif",
+            size: 30,
+            color: "#000",
+          },
+
+          bordercolor: "#FFFFFF",
+          borderwidth: 2,
+        },
       },
     };
   },
   methods: {
-    YgenerateY: function (t, f = 1) {
-      return Math.sin(2 * Math.PI * t * f);
+    YgenerateY: function (t, f = 1, a = 1) {
+      return a * Math.sin(2 * Math.PI * t * f);
     },
     YgenerateX: function () {
       return 2;
     },
     YgenerateZ: function (t, p = 0) {
-      return p + t;
+      return -p + t;
     },
-    XgenerateX: function (t, f = 1) {
-      return Math.cos(2 * Math.PI * t * f);
+    XgenerateX: function (t, f = 1, a = 1) {
+      return a * Math.cos(2 * Math.PI * t * f);
     },
     XgenerateY: function () {
       return -2;
     },
     XgenerateZ: function (t, p = 0) {
-      return p + t;
+      return -p + t;
     },
-    signalGenerateX: function (t, f = 1) {
-      return Math.cos(2 * Math.PI * t * f);
+    signalGenerateX: function (t, f = 1, a = 1) {
+      return a * Math.cos(2 * Math.PI * t * f);
     },
-    signalGenerateY: function (t, f = 1) {
-      return Math.sin(2 * Math.PI * t * f);
+    signalGenerateY: function (t, f = 1, a = 1) {
+      return a * Math.sin(2 * Math.PI * t * f);
     },
     signalGenerateZ: function (t, p = 0) {
-      return p + t;
+      return -p + t;
     },
     createYLine: function () {
       let points = {
@@ -194,9 +211,9 @@ export default {
         y: [],
         z: [],
       };
-      for (let t = 0; t < 2.5; t += 0.01) {
+      for (let t = 0 + this.p; t < 2.5 + this.p; t += 0.01) {
         points.x.push(this.YgenerateX());
-        points.y.push(this.YgenerateY(t, this.f));
+        points.y.push(this.YgenerateY(t, this.f, this.a));
         points.z.push(this.YgenerateZ(t, this.p));
       }
       return points;
@@ -207,8 +224,8 @@ export default {
         y: [],
         z: [],
       };
-      for (let t = 0; t < 2.5; t += 0.01) {
-        points.x.push(this.XgenerateX(t, this.f));
+      for (let t = 0 + this.p; t < 2.5 + this.p; t += 0.01) {
+        points.x.push(this.XgenerateX(t, this.f, this.a));
         points.y.push(this.XgenerateY());
         points.z.push(this.XgenerateZ(t, this.p));
       }
@@ -220,9 +237,9 @@ export default {
         y: [],
         z: [],
       };
-      for (let t = 0; t < 2.5; t += 0.01) {
-        points.x.push(this.signalGenerateX(t, this.f));
-        points.y.push(this.signalGenerateY(t, this.f));
+      for (let t = 0 + this.p; t < 2.5 + this.p; t += 0.01) {
+        points.x.push(this.signalGenerateX(t, this.f, this.a));
+        points.y.push(this.signalGenerateY(t, this.f, this.a));
         points.z.push(this.signalGenerateZ(t, this.p));
       }
       return points;
@@ -278,5 +295,11 @@ a {
 }
 .label {
   display: inline;
+}
+.slider-group {
+  z-index: 5;
+  position: absolute;
+  left: 1000px;
+  top: 400px;
 }
 </style>
