@@ -69,7 +69,7 @@ export default {
           x: [1, 2, 3, 4],
           y: [10, 15, 13, 17],
           z: [10, 15, 13, 17],
-          name: "𝑠𝑖𝑛(2𝜋𝑓₀𝑡)",
+          name: "𝑠𝑖𝑛(2𝜋𝑓₀𝑡ϕ)",
           type: "scatter3d",
           mode: "lines",
 
@@ -86,7 +86,7 @@ export default {
           z: [10, 15, 13, 17],
           type: "scatter3d",
           mode: "lines",
-          name: "𝑐𝑜𝑠(2𝜋𝑓₀𝑡)",
+          name: "𝑐𝑜𝑠(2𝜋𝑓₀𝑡ϕ)",
           opacity: 1,
           line: {
             width: 5,
@@ -100,7 +100,7 @@ export default {
           z: [10, 15, 13, 17],
           type: "scatter3d",
           mode: "lines",
-          name: "e^(2𝜋𝑓₀𝑡)",
+          name: "e^i(2𝜋𝑓₀𝑡ϕ)",
           opacity: 1,
           line: {
             width: 5,
@@ -115,7 +115,25 @@ export default {
           dragmode: false,
           aspectmode: "manual",
           aspectratio: { x: 1, y: 1, z: 2 },
+          annotations: [
+            {
+              xref: "x",
+              yref: "y",
+              xshift: -200,
+              x: -2,
+              xanchor: "left",
+              y: 2,
+              yanchor: "top",
+              text: "Imaginary Axis",
+              showarrow: false,
+              textangle: -90,
+              font: {
+                size: 15,
+              },
+            },
+          ],
           xaxis: {
+            mirror: true,
             title: "Real Axis",
             range: [-2, 2],
             dtick: 1,
@@ -124,7 +142,8 @@ export default {
             linewidth: "5",
           },
           yaxis: {
-            title: "Imaginary Axis",
+            mirror: true,
+            title: "",
             range: [-2, 2],
             dtick: 1,
             showspikes: true,
@@ -132,6 +151,7 @@ export default {
             linewidth: "5",
           },
           zaxis: {
+            mirror: true,
             title: "Time",
             linecolor: "#000000",
             linewidth: "5",
