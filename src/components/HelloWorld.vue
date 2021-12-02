@@ -10,7 +10,7 @@
             :max="4"
             class="slider"
             :interval="0.01"
-            :width="`20vw`"
+            :width="`17vw`"
           />
         </p>
       </div>
@@ -23,7 +23,7 @@
             :max="4"
             class="slider"
             :interval="0.01"
-            :width="`20vw`"
+            :width="`17vw`"
           />
         </p>
       </div>
@@ -36,7 +36,7 @@
             :max="1.7"
             class="slider"
             :interval="0.01"
-            :width="`20vw`"
+            :width="`17vw`"
           />
         </p>
       </div>
@@ -44,15 +44,15 @@
     <div class="legend">
       <div class="legend__item">
         <div class="legend__item__square__blue"></div>
-        𝑠𝑖𝑛(2𝜋𝑓₀𝑡ϕ)
+        <span class="legend__text">𝑠𝑖𝑛(2𝜋𝑓₀𝑡ϕ)</span>
       </div>
       <div class="legend__item">
         <div class="legend__item__square__orange"></div>
-        𝑐𝑜𝑠(2𝜋𝑓₀𝑡ϕ)
+        <span class="legend__text">𝑐𝑜𝑠(2𝜋𝑓₀𝑡ϕ)</span>
       </div>
       <div class="legend__item">
         <div class="legend__item__square__green"></div>
-        e^i(2𝜋𝑓₀𝑡ϕ)
+        <span class="legend__text">e^i(2𝜋𝑓₀𝑡ϕ)</span>
       </div>
     </div>
 
@@ -376,11 +376,17 @@ a {
 }
 .legend {
   display: flex;
-  width: 40vw;
+  width: 100%;
   margin: 0 auto;
+  justify-content: center;
 }
 .legend__item {
   display: flex;
   margin-left: 2rem;
+}
+.legend__text {
+  font-size: 1.3rem;
+  position: relative;
+  top: -6px;
 }
 </style>
