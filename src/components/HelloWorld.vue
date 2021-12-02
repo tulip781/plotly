@@ -1,40 +1,59 @@
 <template>
   <div class="wrapper">
-    <h1>Dimensional (Frequency, Phase, Amplitude)</h1>
     <div class="slider-group">
-      <p class="label">Frequency</p>
-      <p>
-        <vue-slider
-          v-model="f"
-          :min="1"
-          :max="4"
-          class="slider"
-          :interval="0.01"
-          :width="200"
-        />
-      </p>
-      <p class="label">Phase</p>
-      <p>
-        <vue-slider
-          v-model="p"
-          :min="0"
-          :max="4"
-          class="slider"
-          :interval="0.01"
-          :width="200"
-        />
-      </p>
-      <p class="label">Amplitutde</p>
-      <p>
-        <vue-slider
-          v-model="a"
-          :min="0.1"
-          :max="1.7"
-          class="slider"
-          :interval="0.01"
-          :width="200"
-        />
-      </p>
+      <div class="xSpacer">
+        <p class="label">Frequency</p>
+        <p>
+          <vue-slider
+            v-model="f"
+            :min="1"
+            :max="4"
+            class="slider"
+            :interval="0.01"
+            :width="`20vw`"
+          />
+        </p>
+      </div>
+      <div class="xSpacer">
+        <p class="label">Phase</p>
+        <p>
+          <vue-slider
+            v-model="p"
+            :min="0"
+            :max="4"
+            class="slider"
+            :interval="0.01"
+            :width="`20vw`"
+          />
+        </p>
+      </div>
+      <div class="xSpacer">
+        <p class="label">Amplitutde</p>
+        <p>
+          <vue-slider
+            v-model="a"
+            :min="0.1"
+            :max="1.7"
+            class="slider"
+            :interval="0.01"
+            :width="`20vw`"
+          />
+        </p>
+      </div>
+    </div>
+    <div class="legend">
+      <div class="legend__item">
+        <div class="legend__item__square__blue"></div>
+        𝑠𝑖𝑛(2𝜋𝑓₀𝑡ϕ)
+      </div>
+      <div class="legend__item">
+        <div class="legend__item__square__orange"></div>
+        𝑐𝑜𝑠(2𝜋𝑓₀𝑡ϕ)
+      </div>
+      <div class="legend__item">
+        <div class="legend__item__square__green"></div>
+        e^i(2𝜋𝑓₀𝑡ϕ)
+      </div>
     </div>
 
     <Plotly
@@ -43,6 +62,7 @@
       :layout="layout"
       :display-mode-bar="false"
       :drag-mode="false"
+      :responsive="true"
     ></Plotly>
   </div>
 </template>
@@ -110,16 +130,25 @@ export default {
         },
       ],
       layout: {
+        autosize: true,
         dragmode: false,
+        margin: {
+          l: 0,
+          r: 0,
+          b: 0,
+          t: 0,
+          pad: 0,
+        },
         scene: {
           dragmode: false,
+          scrollZoom: false,
           aspectmode: "manual",
           aspectratio: { x: 1, y: 1, z: 2 },
           annotations: [
             {
               xref: "x",
               yref: "y",
-              xshift: -200,
+              xshift: -190,
               x: -2,
               xanchor: "left",
               y: 2,
@@ -179,11 +208,12 @@ export default {
             },
           },
         },
-        width: 1200,
-        height: 800,
-        showlegend: true,
+        // width: 1200,
+        // height: 800,
+        showlegend: false,
         legend: {
           y: 1,
+          x: -3,
           traceorder: "normal",
           font: {
             family: "Avenir, Helvetica, Arial, sans-serif",
@@ -308,9 +338,9 @@ a {
 
 .graph {
   width: 100%;
+  height: 60vh;
 }
 .slider {
-  width: 200px;
   margin: 0 auto;
 }
 .label {
@@ -318,8 +348,39 @@ a {
 }
 .slider-group {
   z-index: 5;
-  position: absolute;
-  left: 1000px;
-  top: 400px;
+  display: flex;
+  margin: auto 0;
+  width: 100%;
+  justify-content: center;
+}
+.xSpacer {
+  margin: 0 2rem;
+}
+.legend__item__square__orange {
+  width: 20px;
+  height: 20px;
+  background-color: hsl(28, 100%, 53%);
+  margin-right: 2rem;
+}
+.legend__item__square__blue {
+  width: 20px;
+  height: 20px;
+  background-color: hsl(205, 70%, 42%);
+  margin-right: 2rem;
+}
+.legend__item__square__green {
+  width: 20px;
+  height: 20px;
+  background-color: hsl(120, 56%, 40%);
+  margin-right: 2rem;
+}
+.legend {
+  display: flex;
+  width: 40vw;
+  margin: 0 auto;
+}
+.legend__item {
+  display: flex;
+  margin-left: 2rem;
 }
 </style>
