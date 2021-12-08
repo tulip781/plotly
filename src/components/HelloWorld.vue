@@ -44,15 +44,15 @@
     <div class="legend">
       <div class="legend__item">
         <div class="legend__item__square__blue"></div>
-        <span class="legend__text">𝑠𝑖𝑛(2𝜋𝑓₀𝑡ϕ)</span>
+        <span class="legend__text">𝑠𝑖𝑛(2𝜋𝑓₀𝑡+ϕ)</span>
       </div>
       <div class="legend__item">
         <div class="legend__item__square__orange"></div>
-        <span class="legend__text">𝑐𝑜𝑠(2𝜋𝑓₀𝑡ϕ)</span>
+        <span class="legend__text">𝑐𝑜𝑠(2𝜋𝑓₀𝑡+ϕ)</span>
       </div>
       <div class="legend__item">
         <div class="legend__item__square__green"></div>
-        <span class="legend__text">e^i(2𝜋𝑓₀𝑡ϕ)</span>
+        <span class="legend__text">e^i(2𝜋𝑓₀𝑡+ϕ)</span>
       </div>
     </div>
 
@@ -89,7 +89,7 @@ export default {
           x: [1, 2, 3, 4],
           y: [10, 15, 13, 17],
           z: [10, 15, 13, 17],
-          name: "𝑠𝑖𝑛(2𝜋𝑓₀𝑡ϕ)",
+          name: "𝑠𝑖𝑛(2𝜋𝑓₀𝑡+ϕ)",
           type: "scatter3d",
           mode: "lines",
 
@@ -106,7 +106,7 @@ export default {
           z: [10, 15, 13, 17],
           type: "scatter3d",
           mode: "lines",
-          name: "𝑐𝑜𝑠(2𝜋𝑓₀𝑡ϕ)",
+          name: "𝑐𝑜𝑠(2𝜋𝑓₀𝑡+ϕ)",
           opacity: 1,
           line: {
             width: 5,
@@ -120,7 +120,7 @@ export default {
           z: [10, 15, 13, 17],
           type: "scatter3d",
           mode: "lines",
-          name: "e^i(2𝜋𝑓₀𝑡ϕ)",
+          name: "e^i(2𝜋𝑓₀𝑡+ϕ)",
           opacity: 1,
           line: {
             width: 5,
@@ -298,9 +298,9 @@ export default {
   computed: {
     dataForYLine: function () {
       let YdataToAdd = this.createYLine();
-      console.log("y data", YdataToAdd);
+
       let XdataToAdd = this.createXLine();
-      console.log("x data", XdataToAdd);
+
       let signalDataToAdd = this.createSignalLine();
       let dataLocal = JSON.parse(JSON.stringify(this.data));
       dataLocal[0].x = YdataToAdd.x;
@@ -312,7 +312,7 @@ export default {
       dataLocal[0].z = YdataToAdd.z;
       dataLocal[1].z = XdataToAdd.z;
       dataLocal[2].z = XdataToAdd.z;
-      console.log(dataLocal);
+
       return dataLocal;
     },
   },

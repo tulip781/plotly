@@ -4,7 +4,7 @@
       <img src="./assets/imp.svg.png" class="logo" />
       <div class="header__titles">
         <h1>Emerging Structural Technologies</h1>
-        <h2>Dimensional (Frequency, Phase, Amplitude)</h2>
+        <h2>Frequency, Phase, Amplitude</h2>
       </div>
     </div>
     <HelloWorld msg="Welcome to Your Vue.js App" />
